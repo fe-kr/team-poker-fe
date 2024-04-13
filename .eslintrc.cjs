@@ -5,14 +5,53 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+	  "plugin:react/recommended",
+	  "plugin:prettier/recommended",
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'import'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
+	  "react/jsx-max-props-per-line": [1, { "maximum": { "single": 3, "multi": 1 } }],
+	  'sort-imports': [
+		  'error',
+		  {
+			  ignoreCase: false,
+			  ignoreDeclarationSort: true,
+			  ignoreMemberSort: false,
+			  memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+			  allowSeparatedGroups: true,
+		  },
+	  ],
+	  'import/no-unresolved': 'error',
+	  'import/order': [
+		  'error',
+		  {
+			  groups: [
+				  'builtin',
+				  'external',
+				  'internal',
+				  ['sibling', 'parent'],
+				  'index',
+				  'unknown',
+			  ],
+			  'newlines-between': 'always',
+			  alphabetize: {
+				  order: 'asc',
+				  caseInsensitive: true,
+			  },
+		  },
+	  ],
   },
+	settings: {
+		'import/resolver': {
+			typescript: {
+				project: './tsconfig.json',
+			},
+		},
+	},
 }

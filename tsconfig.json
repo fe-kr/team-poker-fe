@@ -18,8 +18,18 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+
+    "noImplicitAny": false,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "useUnknownInCatchVariables": false
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
