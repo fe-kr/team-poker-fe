@@ -27,7 +27,6 @@ module.exports = {
 			  allowSeparatedGroups: true,
 		  },
 	  ],
-	  'import/no-unresolved': 'error',
 	  'import/order': [
 		  'error',
 		  {
@@ -47,11 +46,4 @@ module.exports = {
 		  },
 	  ],
   },
-	settings: {
-		'import/resolver': {
-			typescript: {
-				project: './tsconfig.json',
-			},
-		},
-	},
 }
