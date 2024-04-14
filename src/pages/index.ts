@@ -1,6 +1,5 @@
-import { HistoryPaths } from '@constants/history';
 import { createBrowserRouter } from 'react-router-dom';
-
+import { HistoryPaths } from '@constants/history';
 import ErrorBoundary from './Error';
 
 const browserRouter = createBrowserRouter([

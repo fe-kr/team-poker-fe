@@ -38,7 +38,6 @@ module.exports = {
 				  'index',
 				  'unknown',
 			  ],
-			  'newlines-between': 'always',
 			  alphabetize: {
 				  order: 'asc',
 				  caseInsensitive: true,
@@ -46,4 +45,7 @@ module.exports = {
 		  },
 	  ],
   },
+	"settings": {
+		"import/internal-regex": "(@components|@constants|@services)(/.+)?",
+	}
 }
