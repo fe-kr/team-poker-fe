@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { themeConfig } from '@constants/theme';
 
 interface ThemeProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const Theme = ({ children }: ThemeProps) => {
