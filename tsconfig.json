@@ -10,7 +10,9 @@
     "paths": {
       "@services/*": ["./services/*"],
       "@constants/*": ["./constants/*"],
-      "@components": ["./components"]
+      "@components": ["./components"],
+      "@hooks/*": ["./hooks/*"],
+      "@assets/*":["./assets/*"],
     },
 
     /* Bundler mode */

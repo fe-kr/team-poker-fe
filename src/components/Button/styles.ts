@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { VariantType } from '@constants/ui';
+import { StyledVariant } from '@constants/ui';
 
 export const Button = styled.button`
   background-color: ${({ theme, $variant, $color }) =>
-    $variant === VariantType.Outlined ? theme.palette.common.white : theme.palette[$color]?.main};
+    $variant === StyledVariant.Outlined ? theme.palette.common.white : theme.palette[$color]?.main};
   color: ${({ theme, $variant, $color }) =>
-    $variant === VariantType.Outlined ? theme.palette[$color]?.main : theme.palette.common.white};
+    $variant === StyledVariant.Outlined ? theme.palette[$color]?.main : theme.palette.common.white};
   padding: ${({ theme, $size, $isRounded }) =>
     `${theme.shape.ratio[$size]}rem ${theme.shape.ratio[$size] * ($isRounded ? 1 : 2)}rem`};
   font-size: ${({ theme, $size }) => `${theme.shape.ratio[$size]}rem`};
@@ -31,6 +31,13 @@ export const Button = styled.button`
     background-color: ${({ theme, $color }) => theme.palette[$color]?.main};
     background-size: 100%;
     transition: background 0s;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    cursor: default;
+    border-color: ${({ theme }) => theme.palette.gray.light};
+    background-color: ${({ theme }) => theme.palette.gray.main};
   }
 
   &:focus {

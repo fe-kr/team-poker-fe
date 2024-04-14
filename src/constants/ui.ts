@@ -1,15 +1,20 @@
-export enum VariantType {
+export enum StyledVariant {
   Standard = 'standard',
   Outlined = 'outlined',
 }
 
-export enum ColorType {
+export enum StyledColor {
   Primary = 'primary',
   Secondary = 'secondary',
 }
 
-export enum SizeType {
+export enum StyledSize {
   Small = 'small',
   Medium = 'medium',
   Large = 'large',
+}
+
+export enum StyledPosition {
+  Left = 'left',
+  Right = 'right',
 }
