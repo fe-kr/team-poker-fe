@@ -35,8 +35,7 @@ const CreateRoomPage = () => {
   const { formValues, handleChange, isFormChanged, validationErrors, validateForm, validateField } =
     useForm<ICreateRoom>(formInitialValues, formSchema);
 
-  const togglePasswordVisibility = e => {
-    e.preventDefault();
+  const togglePasswordVisibility = () => {
     setIsPasswordVisible(prevState => !prevState);
   };
 
