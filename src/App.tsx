@@ -1,15 +1,16 @@
 import React from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { Theme } from '@components';
+import { ThemeProvider } from 'styled-components';
+import theme from 'ui-kit/theme';
 import pagesRouter from './pages';
 import GlobalStyle from './styles';
 
 const App = () => {
   return (
-    <Theme>
+    <ThemeProvider theme={theme.light}>
       <GlobalStyle />
       <RouterProvider router={pagesRouter} />
-    </Theme>
+    </ThemeProvider>
   );
 };
 

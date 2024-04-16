@@ -10,7 +10,6 @@
     "paths": {
       "@services/*": ["./services/*"],
       "@constants/*": ["./constants/*"],
-      "@components": ["./components"],
       "@hooks/*": ["./hooks/*"],
       "@assets/*":["./assets/*"],
     },

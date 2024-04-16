@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Button } from '@components';
+import Button from 'ui-kit/Button';
+
 import { HistoryPaths } from '@constants/history';
 import { PageContainer } from './styles';
 

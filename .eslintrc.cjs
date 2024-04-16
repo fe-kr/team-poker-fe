@@ -36,6 +36,7 @@ module.exports = {
 			  allowSeparatedGroups: true,
 		  },
 	  ],
+	  'import/no-unresolved': 'off',
 	  'import/order': [
 		  'error',
 		  {

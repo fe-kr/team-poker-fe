@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import Button from 'ui-kit/Button';
+import Input from 'ui-kit/Input';
 import { object, string } from 'yup';
 import BadgeIcon from '@assets/badge.svg?react';
 import KeyIcon from '@assets/key.svg?react';
 import PersonIcon from '@assets/person.svg?react';
 import VisibilityIcon from '@assets/visibility.svg?react';
 import VisibilityOffIcon from '@assets/visibility_off.svg?react';
-import { Button, Input } from '@components';
 import { HistoryPaths } from '@constants/history';
 import { ROOM_PASSWORD_VALIDATION_REGEX, ValidationMessage } from '@constants/validation';
 import useForm from '@hooks/useForm';
