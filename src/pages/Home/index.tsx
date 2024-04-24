@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 
-import { HistoryPaths } from '@constants/history';
+import HistoryPaths from '@services/historyPath';
 import { PageContainer } from './styles';
 
 const HomePage = () => (

@@ -1,19 +1,13 @@
-import { generatePath } from 'react-router-dom';
+import { HistoryPath } from './historyPath';
 
-class HistoryPath {
-  _path;
+class HistoryPaths {
+  static home = new HistoryPath('/');
 
-  constructor(path) {
-    this._path = path;
-  }
+  static createRoom = new HistoryPath('/create-room');
 
-  get path() {
-    return this._path;
-  }
+  static enterRoom = new HistoryPath('/enter-room');
 
-  generatePath(params) {
-    return generatePath(this._path, params);
-  }
+  static room = new HistoryPath('/room/:roomId');
 }
 
-export default HistoryPath;
+export default HistoryPaths;

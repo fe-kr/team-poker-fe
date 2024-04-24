@@ -8,30 +8,29 @@ import KeyIcon from '@assets/key.svg?react';
 import PersonIcon from '@assets/person.svg?react';
 import VisibilityIcon from '@assets/visibility.svg?react';
 import VisibilityOffIcon from '@assets/visibility_off.svg?react';
-import { HistoryPaths } from '@constants/history';
 import { ROOM_PASSWORD_VALIDATION_REGEX, ValidationMessage } from '@constants/validation';
 import useForm from '@hooks/useForm';
+import HistoryPaths from '@services/historyPath';
+import httpClient from '@services/httpClient';
+import tokenStorage from '@services/tokenStorage';
 import { ButtonsContainer, FieldsContainer, Form } from './styles';
 
 const formSchema = object({
   userName: string().required(ValidationMessage.Required),
   roomId: string().required(ValidationMessage.Required),
-  roomPassword: string().matches(
-    ROOM_PASSWORD_VALIDATION_REGEX,
-    ValidationMessage.RoomPasswordRegex,
-  ),
+  password: string().matches(ROOM_PASSWORD_VALIDATION_REGEX, ValidationMessage.RoomPasswordRegex),
 });
 
 interface IEnterRoom {
   userName: string;
   roomId: string;
-  roomPassword: string;
+  password: string;
 }
 
 const formInitialValues = {
   userName: '',
   roomId: '',
-  roomPassword: '',
+  password: '',
 };
 
 const EnterRoomPage = () => {
@@ -44,10 +43,14 @@ const EnterRoomPage = () => {
     setIsPasswordVisible(prevState => !prevState);
   };
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
 
-    navigate(HistoryPaths.room.path);
+    await httpClient.signIn({ body: formValues }).then(res => res.text());
+
+    const { roomId } = tokenStorage.parseItem();
+
+    navigate(HistoryPaths.room.generatePath({ roomId }));
   };
 
   const PasswordIcon = isPasswordVisible ? VisibilityOffIcon : VisibilityIcon;
@@ -73,11 +76,11 @@ const EnterRoomPage = () => {
           startIcon={<KeyIcon />}
           endIcon={<PasswordIcon onClick={togglePasswordVisibility} />}
           placeholder="Room Password"
-          name="roomPassword"
-          value={formValues.roomPassword}
+          name="password"
+          value={formValues.password}
           type={isPasswordVisible ? 'text' : 'password'}
           autoComplete="off"
-          error={validationErrors.roomPassword}
+          error={validationErrors.password}
           onChange={handleChange}
           onBlur={validateField}
         />

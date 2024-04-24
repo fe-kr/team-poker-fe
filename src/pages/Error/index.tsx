@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useRouteError } from 'react-router-dom';
 import Button from 'ui-kit/Button';
-import { HistoryPaths } from '@constants/history';
+import HistoryPaths from '@services/historyPath';
 import { Container, ErrorMessage, Header } from './styles';
 
 interface RouteError {

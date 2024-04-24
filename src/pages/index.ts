@@ -1,5 +1,6 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { HistoryPaths } from '@constants/history';
+import { createBrowserRouter, redirect } from 'react-router-dom';
+import HistoryPaths from '@services/historyPath';
+import tokenStorage from '@services/tokenStorage';
 import ErrorBoundary from './Error';
 
 const browserRouter = createBrowserRouter([
@@ -21,6 +22,7 @@ const browserRouter = createBrowserRouter([
   {
     path: HistoryPaths.room.path,
     lazy: () => import('./Room'),
+    loader: () => !tokenStorage.checkIsValid() && redirect(HistoryPaths.enterRoom.path),
     ErrorBoundary,
   },
 ]);

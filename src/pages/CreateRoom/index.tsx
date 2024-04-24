@@ -7,27 +7,26 @@ import KeyIcon from '@assets/key.svg?react';
 import PersonIcon from '@assets/person.svg?react';
 import VisibilityIcon from '@assets/visibility.svg?react';
 import VisibilityOffIcon from '@assets/visibility_off.svg?react';
-import { HistoryPaths } from '@constants/history';
 import { ROOM_PASSWORD_VALIDATION_REGEX, ValidationMessage } from '@constants/validation';
 import useForm from '@hooks/useForm';
+import HistoryPaths from '@services/historyPath';
+import httpClient from '@services/httpClient';
+import tokenStorage from '@services/tokenStorage';
 import { ButtonsContainer, FieldsContainer, Form } from './styles';
 
 const formSchema = object({
   userName: string().required(ValidationMessage.Required),
-  roomPassword: string().matches(
-    ROOM_PASSWORD_VALIDATION_REGEX,
-    ValidationMessage.RoomPasswordRegex,
-  ),
+  password: string().matches(ROOM_PASSWORD_VALIDATION_REGEX, ValidationMessage.RoomPasswordRegex),
 });
 
 interface ICreateRoom {
   userName: string;
-  roomPassword: string;
+  password: string;
 }
 
 const formInitialValues = {
   userName: '',
-  roomPassword: '',
+  password: '',
 };
 
 const CreateRoomPage = () => {
@@ -45,7 +44,10 @@ const CreateRoomPage = () => {
 
     if (!(await validateForm())) return;
 
-    navigate(HistoryPaths.room.path);
+    await httpClient.signUp({ body: formValues }).then(res => res.text());
+
+    const { roomId } = tokenStorage.parseItem();
+    navigate(HistoryPaths.room.generatePath({ roomId }));
   };
 
   const PasswordIcon = isPasswordVisible ? VisibilityOffIcon : VisibilityIcon;
@@ -71,11 +73,11 @@ const CreateRoomPage = () => {
           startIcon={<KeyIcon />}
           endIcon={<PasswordIcon onClick={togglePasswordVisibility} />}
           placeholder="Room Password"
-          name="roomPassword"
+          name="password"
           type={isPasswordVisible ? 'text' : 'password'}
           autoComplete="off"
-          value={formValues.roomPassword}
-          error={validationErrors.roomPassword}
+          value={formValues.password}
+          error={validationErrors.password}
           onChange={handleChange}
           onBlur={validateField}
         />
