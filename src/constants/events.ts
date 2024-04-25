@@ -3,6 +3,7 @@ export const RoomEvent = {
   UserJoined: 'UserJoined',
   UserLeft: 'UserLeft',
   TopicChose: 'TopicChose',
+  TopicCreated: 'TopicCreated',
   VoteSubmitted: 'VoteSubmitted',
   VotesRevealed: 'VotesRevealed',
 };

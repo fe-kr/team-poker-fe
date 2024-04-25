@@ -7,7 +7,7 @@ class HistoryPaths {
 
   static enterRoom = new HistoryPath('/enter-room');
 
-  static room = new HistoryPath('/room/:roomId');
+  static room = new HistoryPath('/room/:roomId/:topicId?');
 }
 
 export default HistoryPaths;
