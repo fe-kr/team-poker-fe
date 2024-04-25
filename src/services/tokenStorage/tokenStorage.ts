@@ -30,6 +30,6 @@ export class TokenStorage {
   checkIsValid() {
     const { exp } = this.parseItem() || {};
 
-    return exp && exp > Date.now();
+    return exp && exp * 1000 > Date.now();
   }
 }

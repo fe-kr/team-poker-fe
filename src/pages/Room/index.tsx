@@ -1,7 +1,11 @@
 import React from 'react';
+import Container from './Container';
+import Header from './Header';
 
-const RoomPage = () => {
-  return <>RoomPage</>;
-};
+const RoomPage = () => (
+  <Container>
+    <Header />
+  </Container>
+);
 
 export { RoomPage as Component };
