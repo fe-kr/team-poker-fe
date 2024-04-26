@@ -23,6 +23,12 @@ const browserRouter = createBrowserRouter([
     path: HistoryPaths.room.path,
     lazy: () => import('./Room'),
     loader: () => !tokenStorage.checkIsValid() && redirect(HistoryPaths.enterRoom.path),
+    children: [
+      {
+        path: HistoryPaths.roomTopic.path,
+        lazy: () => import('./Room/Main'),
+      },
+    ],
     ErrorBoundary,
   },
 ]);

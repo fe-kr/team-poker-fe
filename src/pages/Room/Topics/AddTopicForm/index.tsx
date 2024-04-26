@@ -3,7 +3,7 @@ import Button from 'ui-kit/Button';
 import Input from 'ui-kit/Input';
 import useDialog from 'ui-kit/useDialog';
 import { object, string } from 'yup';
-import { RoomEvent } from '@constants/events';
+import { RoomEvent } from '@constants/enum';
 import { ValidationMessage } from '@constants/validation';
 import useForm from '@hooks/useForm';
 import useTopicsStore from '@hooks/useTopicsStore';

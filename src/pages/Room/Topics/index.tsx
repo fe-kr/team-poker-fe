@@ -6,7 +6,7 @@ import Input from 'ui-kit/Input';
 import useDialog from 'ui-kit/useDialog';
 import AddIcon from '@assets/add.svg?react';
 import SearchIcon from '@assets/search.svg?react';
-import { RoomEvent } from '@constants/events';
+import { RoomEvent } from '@constants/enum';
 import useTopicsStore from '@hooks/useTopicsStore';
 import HistoryPaths from '@services/historyPath';
 import wsClient from '@services/wsClient';
@@ -34,7 +34,7 @@ const TopicsSidebar = () => {
     const { topicId } = e.currentTarget.dataset;
 
     wsClient.emit(RoomEvent.TopicChose, topicId);
-    navigate(HistoryPaths.room.generatePath({ roomId, topicId }));
+    navigate(HistoryPaths.roomTopic.generatePath({ roomId, topicId }));
   };
 
   const filteredTopics = useMemo(
