@@ -12,6 +12,7 @@
       "@constants/*": ["./constants/*"],
       "@hooks/*": ["./hooks/*"],
       "@assets/*":["./assets/*"],
+      "@hocs/*": ["./hocs/*"],
     },
 
     /* Bundler mode */

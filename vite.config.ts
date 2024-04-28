@@ -13,6 +13,7 @@ export default defineConfig({
       '@constants': path.resolve(__dirname, './src/constants'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
       '@assets': path.resolve(__dirname, './src/assets'),
+      '@hocs': path.resolve(__dirname, './src/hocs'),
     },
   },
   plugins: [

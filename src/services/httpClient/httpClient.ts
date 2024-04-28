@@ -15,12 +15,16 @@ export class HttpClient {
     return this.http.post('sign-in', { ...params, json: body });
   }
 
-  getRoomTopics({ roomId, ...params }) {
-    return this.http.get(`topics`, { ...params, searchParams: { roomId } }).json();
+  getRoom({ roomId, ...params }) {
+    return this.http.get(`rooms/${roomId}`, { ...params }).json();
   }
 
   getRoomTopicById({ roomId, topicId, ...params }) {
     return this.http.get(`topics/${topicId}`, { ...params, searchParams: { roomId } }).json();
+  }
+
+  getVotesByTopicId({ topicId, ...params }) {
+    return this.http.get(`votes/${topicId}`, { ...params }).json();
   }
 
   createRoomTopic({ body, ...params }) {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useToasts from 'ui-kit/useToasts';
-import { RoomEvent } from '@constants/enum';
+import { RoomEvent, UserType } from '@constants/enum';
 import useRefValue from '@hooks/useRefValue';
 import useTopicsStore from '@hooks/useTopicsStore';
 import { UserContext } from '@hooks/useUserContext';
@@ -13,6 +13,12 @@ import tokenStorage from '@services/tokenStorage';
 import wsClient from '@services/wsClient';
 import { Container } from './styles';
 
+const getCurrentUserInitialState = () => {
+  const user = tokenStorage.parseItem();
+
+  return { ...user, isAdmin: user.type === UserType.Admin };
+};
+
 const RoomContainer = ({ children }) => {
   const { roomId, topicId } = useParams();
   const navigate = useNavigate();
@@ -20,7 +26,7 @@ const RoomContainer = ({ children }) => {
   const topicIdRef = useRefValue(topicId);
 
   const [isRoomLoaded, setIsRoomLoaded] = useState(false);
-  const [userState] = useState(tokenStorage.parseItem());
+  const [userState] = useState(getCurrentUserInitialState);
 
   const { addToast } = useToasts(({ addToast }) => ({ addToast }));
   const { setUsers, addUser, deleteUser } = useUsersStore(({ setUsers, addUser, deleteUser }) => ({
@@ -32,19 +38,27 @@ const RoomContainer = ({ children }) => {
     setTopics,
     addTopic,
   }));
-  const { addVote, setResults, resetVotes } = useVotesStore(
-    ({ addVote, setResults, resetVotes }) => ({
+  const { addVote, setResults, setVotes, resetVotes } = useVotesStore(
+    ({ addVote, setResults, setVotes, resetVotes }) => ({
       addVote,
+      setVotes,
       setResults,
       resetVotes,
     }),
   );
 
   useEffect(() => {
-    Promise.all([httpClient.getRoomTopics({ roomId }).then(setTopics)])
+    Promise.all([
+      httpClient.getRoom({ roomId }),
+      topicIdRef.current && httpClient.getVotesByTopicId({ topicId: topicIdRef.current }),
+    ])
+      .then(([{ topics }, votes]) => {
+        setTopics(topics);
+        setVotes(votes);
+      })
       .catch(Error)
       .finally(() => setIsRoomLoaded(true));
-  }, [roomId, setTopics]);
+  }, [roomId, setTopics, setVotes, topicIdRef]);
 
   useEffect(() => {
     wsClient.init({

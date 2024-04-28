@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import withRoomAdminVisibility from '@hocs/withAdminVisibility';
+import React, { useDeferredValue, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Checkbox from 'ui-kit/Checkbox';
@@ -16,6 +17,7 @@ import { ControlsContainer, MainContainer, TopicsList, TopicsListItem } from './
 const TopicsSidebar = () => {
   const { roomId, topicId } = useParams();
   const [searchValue, setSearchValue] = useState('');
+  const deferredSearchValue = useDeferredValue(searchValue);
   const navigate = useNavigate();
   const [showCompletedItems, setShowCompletedItemsItems] = useState(false);
   const { topics } = useTopicsStore();
@@ -41,11 +43,11 @@ const TopicsSidebar = () => {
     () =>
       topics.filter(({ title, description, completedDate }) => {
         const shouldIncludeCompletedItems = showCompletedItems || !completedDate;
-        const regex = new RegExp(searchValue, 'gi');
+        const regex = new RegExp(deferredSearchValue || '', 'gi');
 
         return shouldIncludeCompletedItems && [title, description].some(item => regex.test(item));
       }),
-    [topics, searchValue, showCompletedItems],
+    [topics, deferredSearchValue, showCompletedItems],
   );
 
   return (
@@ -83,6 +85,7 @@ const TopicsSidebar = () => {
           </TopicsListItem>
         ))}
       </TopicsList>
+
       <Button
         className="add-topic-button"
         title="Add Topic"
@@ -96,4 +99,4 @@ const TopicsSidebar = () => {
   );
 };
 
-export default TopicsSidebar;
+export default withRoomAdminVisibility(TopicsSidebar);

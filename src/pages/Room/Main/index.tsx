@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Card from 'ui-kit/Card';
 import Chip from 'ui-kit/Chip';
-import { RoomEvent, UserType } from '@constants/enum';
+import { RoomEvent } from '@constants/enum';
 import { playingCardOptions } from '@constants/options';
 import useUserContext from '@hooks/useUserContext';
 import useVotesStore from '@hooks/useVotesStore';
@@ -22,14 +22,13 @@ const Main = () => {
   const currentUser = useUserContext();
   const { results, votes, addVote, resetVotes } = useVotesStore();
 
-  const isCurrentUserAdmin = currentUser.type === UserType.Admin;
   const isVotesRevealed = !!results;
   const votesList = useMemo(() => Object.values(votes), [votes]);
 
   const onSelectVote = e => {
     const { vote } = e.currentTarget.dataset;
 
-    addVote({ vote, topicId, user: currentUser });
+    addVote({ vote, topicId, userName: currentUser.name, id: currentUser.id });
 
     wsClient.emit(RoomEvent.VoteSubmitted, { vote, topicId });
   };
@@ -46,12 +45,21 @@ const Main = () => {
 
   return (
     <StyledMain>
-      {isCurrentUserAdmin && (
+      {currentUser.isAdmin && (
         <ControlsContainer>
           {!isVotesRevealed && (
             <Button $size="small" disabled={!votesList.length} onClick={onShowResults}>
               Show Results
             </Button>
+          )}
+
+          {isVotesRevealed && (
+            <ResultsContainer>
+              <b>Min: {results.min}</b>
+              <b>Max: {results.max}</b>
+              <b>Mean: {results.mean}</b>
+              <b>Median: {results.median}</b>
+            </ResultsContainer>
           )}
 
           {isVotesRevealed && (
@@ -63,25 +71,17 @@ const Main = () => {
       )}
 
       <VotesContainer>
-        {Object.values(votes).map(({ user, vote }) => {
-          const isCurrentUser = user.id === currentUser.id;
+        {Object.values(votes).map(({ id, userName, vote }) => {
+          const isCurrentUser = id === currentUser.id;
 
           return (
-            <Vote key={user.id}>
+            <Vote key={id}>
               <Card $isFlipSide={!isCurrentUser && !isVotesRevealed}>{vote}</Card>
-              <Chip name={user.name} $size="large" />
+              <Chip name={userName} $size="large" />
             </Vote>
           );
         })}
       </VotesContainer>
-
-      {isVotesRevealed && (
-        <ResultsContainer>
-          <span>Min: {results.min}</span>
-          <span>Max: {results.max}</span>
-          <span>Mean: {results.mean}</span>
-        </ResultsContainer>
-      )}
 
       {!isVotesRevealed && (
         <CardsList>

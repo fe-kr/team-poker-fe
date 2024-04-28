@@ -23,7 +23,8 @@ export const VotesContainer = styled.ul`
 
 export const ResultsContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
   flex-grow: 1;
 `;
 
