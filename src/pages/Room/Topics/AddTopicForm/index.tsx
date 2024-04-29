@@ -43,7 +43,7 @@ const AddTopicForm = ({ roomId }) => {
   };
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form noValidate onSubmit={onSubmit}>
       <Input
         name="title"
         placeholder="Title"

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Card from 'ui-kit/Card';
 import Chip from 'ui-kit/Chip';
+
 import { RoomEvent } from '@constants/enum';
 import { playingCardOptions } from '@constants/options';
 import useUserContext from '@hooks/useUserContext';
@@ -16,6 +17,7 @@ import {
   Vote,
   VotesContainer,
 } from './styles';
+import SubmitVotesForm from './SubmitVotesForm';
 
 const Main = () => {
   const { topicId } = useParams();
@@ -45,30 +47,30 @@ const Main = () => {
 
   return (
     <StyledMain>
-      {currentUser.isAdmin && (
-        <ControlsContainer>
-          {!isVotesRevealed && (
-            <Button $size="small" disabled={!votesList.length} onClick={onShowResults}>
-              Show Results
-            </Button>
-          )}
+      <ControlsContainer>
+        {isVotesRevealed && (
+          <ResultsContainer>
+            <b>Min: {results.min}</b>
+            <b>Max: {results.max}</b>
+            <b>Mean: {results.mean}</b>
+            <b>Median: {results.median}</b>
+          </ResultsContainer>
+        )}
 
-          {isVotesRevealed && (
-            <ResultsContainer>
-              <b>Min: {results.min}</b>
-              <b>Max: {results.max}</b>
-              <b>Mean: {results.mean}</b>
-              <b>Median: {results.median}</b>
-            </ResultsContainer>
-          )}
+        {isVotesRevealed && currentUser.isAdmin && <SubmitVotesForm />}
 
-          {isVotesRevealed && (
-            <Button $size="small" onClick={onResetResults}>
-              Reset Results
-            </Button>
-          )}
-        </ControlsContainer>
-      )}
+        {!isVotesRevealed && currentUser.isAdmin && (
+          <Button $size="small" disabled={!votesList.length} onClick={onShowResults}>
+            Show Results
+          </Button>
+        )}
+
+        {isVotesRevealed && currentUser.isAdmin && (
+          <Button $size="small" onClick={onResetResults}>
+            Reset Results
+          </Button>
+        )}
+      </ControlsContainer>
 
       <VotesContainer>
         {Object.values(votes).map(({ id, userName, vote }) => {

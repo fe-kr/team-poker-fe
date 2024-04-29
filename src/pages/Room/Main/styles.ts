@@ -15,10 +15,13 @@ export const ControlsContainer = styled.div`
 
 export const VotesContainer = styled.ul`
   display: flex;
-  flex-grow: 1;
+  flex: 1 1 0;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 1rem;
   padding: 0;
+  min-height: 0;
+  overflow-y: auto;
 `;
 
 export const ResultsContainer = styled.div`
@@ -38,6 +41,7 @@ export const Vote = styled.li`
 
 export const CardsList = styled.ul`
   display: flex;
+  margin-top: auto;
   justify-content: center;
   flex-wrap: wrap;
   padding: 0;

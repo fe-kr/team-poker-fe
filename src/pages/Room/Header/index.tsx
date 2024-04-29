@@ -1,9 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Chip from 'ui-kit/Chip';
 import useDialog from 'ui-kit/useDialog';
 import LogoutIcon from '@assets/logout.svg?react';
+import useTopicsStore from '@hooks/useTopicsStore';
 import useUserContext from '@hooks/useUserContext';
 import useRoomStore from '@hooks/useUsersStore';
 import HistoryPaths from '@services/historyPath';
@@ -17,7 +18,9 @@ import {
 } from './styles';
 
 const RoomHeader = () => {
+  const { topicId } = useParams();
   const users = useRoomStore(({ users }) => users);
+  const topics = useTopicsStore(({ topics }) => topics);
   const navigate = useNavigate();
   const currentUser = useUserContext();
   const { openDialog, closeDialog } = useDialog(({ openDialog, closeDialog }) => ({
@@ -55,6 +58,8 @@ const RoomHeader = () => {
           <Chip $size="large" name={name} title={name} key={id} />
         ))}
       </ChipsContainer>
+
+      <p>{topics[topicId]?.title}</p>
 
       <UserMenuContainer>
         <UserInfoContainer>

@@ -5,6 +5,7 @@ export const Header = styled.header`
   height: 3rem;
   grid-column: 1 / 4;
   display: flex;
+  gap: 1rem;
   align-items: center;
   justify-content: space-between;
   border-bottom: ${({ theme }) => theme.palette.primary.main} solid;
@@ -18,13 +19,19 @@ export const ChipsContainer = styled.div`
 export const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 1rem;
   gap: 0.25rem;
   max-width: 200px;
+
+  & > b {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 export const UserMenuContainer = styled.div`
   display: flex;
+  gap: 1rem;
   align-items: center;
 `;
 

@@ -30,4 +30,8 @@ export class HttpClient {
   createRoomTopic({ body, ...params }) {
     return this.http.post('topics', { ...params, json: body }).json();
   }
+
+  updateRoomTopic({ topicId, body, ...params }) {
+    return this.http.put(`topics/${topicId}`, { ...params, json: body }).json();
+  }
 }

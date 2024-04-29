@@ -13,6 +13,7 @@
       "@hooks/*": ["./hooks/*"],
       "@assets/*":["./assets/*"],
       "@hocs/*": ["./hocs/*"],
+      "@utils/*": ["./utils/*"]
     },
 
     /* Bundler mode */

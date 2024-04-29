@@ -1,3 +1,4 @@
+import { groupBy } from '@utils/common';
 import { create } from 'zustand';
 
 const useVotesStore = create()(set => ({
@@ -10,7 +11,9 @@ const useVotesStore = create()(set => ({
     set(state => ({ ...state, results }));
   },
   setVotes: votes => {
-    set(state => ({ ...state, votes }));
+    const groupedVotes = groupBy(votes, 'id');
+
+    set(state => ({ ...state, votes: groupedVotes }));
   },
   resetVotes: () => {
     set({ votes: {}, results: null });

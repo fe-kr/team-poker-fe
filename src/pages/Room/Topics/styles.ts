@@ -30,8 +30,8 @@ export const TopicsList = styled.ul`
 `;
 
 export const TopicsListItem = styled.li`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1rem;
   list-style-type: none;
   gap: 0.5rem;
   padding: 0.5rem;
@@ -40,6 +40,7 @@ export const TopicsListItem = styled.li`
     solid;
   border-radius: ${({ theme }) => theme.shape.border.md};
   background-color: ${({ theme, $isActive }) => ($isActive ? theme.palette.primary.light : null)};
+  pointer-events: ${({ $isCompleted }) => ($isCompleted ? 'none' : null)};
   color: ${({ theme, $isCompleted, $isActive }) => {
     if ($isCompleted) return theme.palette.gray.main;
 

@@ -1,4 +1,5 @@
 import withRoomAdminVisibility from '@hocs/withAdminVisibility';
+import { checkIsNil } from '@utils/common';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
@@ -9,6 +10,7 @@ import AddIcon from '@assets/add.svg?react';
 import SearchIcon from '@assets/search.svg?react';
 import { RoomEvent } from '@constants/enum';
 import useTopicsStore from '@hooks/useTopicsStore';
+import useVotesStore from '@hooks/useVotesStore';
 import HistoryPaths from '@services/historyPath';
 import wsClient from '@services/wsClient';
 import AddTopicForm from './AddTopicForm';
@@ -21,6 +23,7 @@ const TopicsSidebar = () => {
   const navigate = useNavigate();
   const [showCompletedItems, setShowCompletedItemsItems] = useState(false);
   const { topics } = useTopicsStore();
+  const { resetVotes } = useVotesStore(({ resetVotes }) => ({ resetVotes }));
   const { openDialog } = useDialog(({ openDialog }) => ({ openDialog }));
 
   const onSearchInTopics = e => {
@@ -36,13 +39,14 @@ const TopicsSidebar = () => {
     const { topicId } = e.currentTarget.dataset;
 
     wsClient.emit(RoomEvent.TopicChose, topicId);
+    resetVotes();
     navigate(HistoryPaths.roomTopic.generatePath({ roomId, topicId }));
   };
 
   const filteredTopics = useMemo(
     () =>
-      topics.filter(({ title, description, completedDate }) => {
-        const shouldIncludeCompletedItems = showCompletedItems || !completedDate;
+      Object.values(topics).filter(({ title, description, estimation }) => {
+        const shouldIncludeCompletedItems = showCompletedItems || checkIsNil(estimation);
         const regex = new RegExp(deferredSearchValue || '', 'gi');
 
         return shouldIncludeCompletedItems && [title, description].some(item => regex.test(item));
@@ -68,20 +72,25 @@ const TopicsSidebar = () => {
       </ControlsContainer>
 
       <TopicsList>
-        {filteredTopics.map(({ id, title, description, completedDate }) => (
+        {filteredTopics.map(({ id, title, description, estimation }) => (
           <TopicsListItem
             onClick={onSelectTopic}
             key={id}
             data-topic-id={id}
             $isActive={id === topicId}
-            $isCompleted={!!completedDate}
+            $isCompleted={!checkIsNil(estimation)}
           >
             <b className="title" title={title}>
               {title}
             </b>
-            <span className="description" title={description}>
-              {description}
-            </span>
+
+            <b>{estimation}</b>
+
+            {description && (
+              <span className="description" title={description}>
+                {description}
+              </span>
+            )}
           </TopicsListItem>
         ))}
       </TopicsList>

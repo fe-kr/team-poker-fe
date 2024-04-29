@@ -11,7 +11,7 @@ import HistoryPaths from '@services/historyPath';
 import httpClient from '@services/httpClient';
 import tokenStorage from '@services/tokenStorage';
 import wsClient from '@services/wsClient';
-import { Container } from './styles';
+import { Container, Loader } from './styles';
 
 const getCurrentUserInitialState = () => {
   const user = tokenStorage.parseItem();
@@ -121,7 +121,7 @@ const RoomContainer = ({ children }) => {
   ]);
 
   if (!isRoomLoaded) {
-    return <>Loading...</>;
+    return <Loader>Loading</Loader>;
   }
 
   return (
