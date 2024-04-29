@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Chip from 'ui-kit/Chip';
 import useDialog from 'ui-kit/useDialog';
-import LogoutIcon from '@assets/logout.svg?react';
+import { LogoutIcon } from '@assets/icons';
 import useTopicsStore from '@hooks/useTopicsStore';
 import useUserContext from '@hooks/useUserContext';
 import useRoomStore from '@hooks/useUsersStore';

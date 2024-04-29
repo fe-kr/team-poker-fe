@@ -6,8 +6,7 @@ import Button from 'ui-kit/Button';
 import Checkbox from 'ui-kit/Checkbox';
 import Input from 'ui-kit/Input';
 import useDialog from 'ui-kit/useDialog';
-import AddIcon from '@assets/add.svg?react';
-import SearchIcon from '@assets/search.svg?react';
+import { AddIcon, SearchIcon } from '@assets/icons';
 import { RoomEvent } from '@constants/enum';
 import useTopicsStore from '@hooks/useTopicsStore';
 import useVotesStore from '@hooks/useVotesStore';
@@ -21,7 +20,7 @@ const TopicsSidebar = () => {
   const [searchValue, setSearchValue] = useState('');
   const deferredSearchValue = useDeferredValue(searchValue);
   const navigate = useNavigate();
-  const [showCompletedItems, setShowCompletedItemsItems] = useState(false);
+  const [showCompletedItems, setShowCompletedItemsItems] = useState(true);
   const { topics } = useTopicsStore();
   const { resetVotes } = useVotesStore(({ resetVotes }) => ({ resetVotes }));
   const { openDialog } = useDialog(({ openDialog }) => ({ openDialog }));

@@ -56,9 +56,7 @@ export const TopicsListItem = styled.li`
 
   & > .title {
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
   }
 
   & > .description {

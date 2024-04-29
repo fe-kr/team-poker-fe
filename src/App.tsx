@@ -16,7 +16,7 @@ const App = () => {
       <GlobalStyle />
       <RouterProvider router={pagesRouter} />
       <Dialog />
-      <ToastsContainer />
+      <ToastsContainer position="bottom-right" />
     </ThemeProvider>
   );
 };

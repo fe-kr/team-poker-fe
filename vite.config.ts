@@ -19,7 +19,10 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    svgr(),
+    svgr({
+      svgrOptions: { ref: true, svgo: false, titleProp: true },
+      include: '**/*.svg',
+    }),
     federation({
       name: 'team-poker-app',
       remotes: {
