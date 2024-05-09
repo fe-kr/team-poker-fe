@@ -1,30 +1,32 @@
-# React + TypeScript + Vite
+# Team Poker App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
+Scrum Poker, also known as Planning Poker, is an agile planning and estimating technique that uses consensus to estimate relative sizes of user stories or tasks. This app facilitates remote or co-located teams to engage in lively and productive estimation sessions.
 
-Currently, two official plugins are available:
+## Features
+- **Real-time Collaboration**: Team members can estimate user stories simultaneously in real-time.
+- **Anonymous Voting**: Votes are hidden until all team members have voted to avoid bias.
+- **Mobile Friendly**: Accessible on various devices, ensuring participation from all team members.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started (for FE project)
+1. **Clone the repository**:
+   _git clone https://github.com/fe-kr/team-poker-fe.git_
+2. **Install dependencies**: _npm install_
+3. **Start the application**: _npm start_
 
-## Expanding the ESLint configuration
+## Usage
+- **Create a Room**: Create room and invite team members.
+- **Estimate Stories**: Discuss and vote on user stories.
+- **Review Results**: Analyze voting results and agree on story points.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Contributing
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-- Configure the top-level `parserOptions` property like this:
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## License
+Distributed under the MIT License.
