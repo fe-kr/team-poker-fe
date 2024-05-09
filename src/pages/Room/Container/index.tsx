@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useToasts from 'ui-kit/useToasts';
 import { RoomEvent, UserType } from '@constants/enum';
@@ -16,10 +16,27 @@ import { Container, Loader } from './styles';
 const getCurrentUserInitialState = () => {
   const user = tokenStorage.parseItem();
 
-  return { ...user, isAdmin: user.type === UserType.Admin };
+  return { ...user, isAdmin: user.type === UserType.ADMIN };
 };
 
-const RoomContainer = ({ children }) => {
+const selectTopics = ({ setTopics, addTopic }) => ({ setTopics, addTopic });
+const selectUsers = ({ setUsers, addUser, deleteUser }) => ({
+  setUsers,
+  addUser,
+  deleteUser,
+});
+const selectVotes = ({ addVote, setResults, setVotes, resetVotes }) => ({
+  addVote,
+  setVotes,
+  setResults,
+  resetVotes,
+});
+
+interface RoomContainerProps {
+  children: ReactNode;
+}
+
+const RoomContainer = ({ children }: RoomContainerProps) => {
   const { roomId, topicId } = useParams();
   const navigate = useNavigate();
 
@@ -29,23 +46,9 @@ const RoomContainer = ({ children }) => {
   const [userState] = useState(getCurrentUserInitialState);
 
   const { addToast } = useToasts(({ addToast }) => ({ addToast }));
-  const { setUsers, addUser, deleteUser } = useUsersStore(({ setUsers, addUser, deleteUser }) => ({
-    setUsers,
-    addUser,
-    deleteUser,
-  }));
-  const { setTopics, addTopic } = useTopicsStore(({ setTopics, addTopic }) => ({
-    setTopics,
-    addTopic,
-  }));
-  const { addVote, setResults, setVotes, resetVotes } = useVotesStore(
-    ({ addVote, setResults, setVotes, resetVotes }) => ({
-      addVote,
-      setVotes,
-      setResults,
-      resetVotes,
-    }),
-  );
+  const { setUsers, addUser, deleteUser } = useUsersStore(selectUsers);
+  const { setTopics, addTopic } = useTopicsStore(selectTopics);
+  const { addVote, setResults, setVotes, resetVotes } = useVotesStore(selectVotes);
 
   useEffect(() => {
     Promise.all([
@@ -71,38 +74,38 @@ const RoomContainer = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    wsClient.on(RoomEvent.UsersConnected, users => setUsers(users));
+    wsClient.on(RoomEvent.USERS_CONNECTED, users => setUsers(users));
 
-    wsClient.on(RoomEvent.UserJoined, user => {
+    wsClient.on(RoomEvent.USER_JOINED, user => {
       addUser(user);
       addToast({ message: `${user.name} joined`, color: 'primary' });
     });
 
-    wsClient.on(RoomEvent.UserLeft, user => {
-      deleteUser(user);
-      addToast({ message: `${user.name} left`, color: 'primary' });
+    wsClient.on(RoomEvent.USER_LEFT, ({ id, name }) => {
+      deleteUser(id);
+      addToast({ message: `${name} left`, color: 'primary' });
     });
 
-    wsClient.on(RoomEvent.TopicChose, topicId => {
+    wsClient.on(RoomEvent.TOPIC_CHOSE, topicId => {
       navigate(HistoryPaths.roomTopic.generatePath({ topicId, roomId }));
     });
 
-    wsClient.on(RoomEvent.TopicCreated, async topicId => {
+    wsClient.on(RoomEvent.TOPIC_CREATED, async topicId => {
       const topic = await httpClient.getRoomTopicById({ roomId, topicId });
       addTopic(topic);
     });
 
-    wsClient.on(RoomEvent.VoteSubmitted, vote => {
+    wsClient.on(RoomEvent.VOTE_SUBMITTED, vote => {
       if (topicIdRef.current !== vote.topicId) return;
       addVote(vote);
     });
 
-    wsClient.on(RoomEvent.VotesRevealed, ({ topicId, results }) => {
+    wsClient.on(RoomEvent.VOTES_REVEALED, ({ topicId, results }) => {
       if (topicIdRef.current !== topicId) return;
       setResults(results);
     });
 
-    wsClient.on(RoomEvent.VotesReset, topicId => {
+    wsClient.on(RoomEvent.VOTES_RESET, topicId => {
       if (topicIdRef.current !== topicId) return;
       resetVotes();
     });

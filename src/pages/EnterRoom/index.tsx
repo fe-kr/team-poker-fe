@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Input from 'ui-kit/Input';
@@ -9,7 +9,7 @@ import useForm from '@hooks/useForm';
 import HistoryPaths from '@services/historyPath';
 import httpClient from '@services/httpClient';
 import tokenStorage from '@services/tokenStorage';
-import { ButtonsContainer, FieldsContainer, Form } from './styles';
+import { ButtonsContainer, FieldsContainer, Form, PasswordButton } from './styles';
 
 const formSchema = object({
   userName: string().required(ValidationMessage.Required),
@@ -32,7 +32,7 @@ const formInitialValues = {
 const EnterRoomPage = () => {
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { formValues, handleChange, isFormChanged, validationErrors, validateField } =
+  const { formValues, handleChange, isFormChanged, validationErrors, validateForm, validateField } =
     useForm<IEnterRoom>(formInitialValues, formSchema);
 
   const togglePasswordVisibility = () => {
@@ -42,11 +42,17 @@ const EnterRoomPage = () => {
   const onSubmit = async e => {
     e.preventDefault();
 
-    await httpClient.signIn({ body: formValues }).then(res => res.text());
+    if (!(await validateForm())) return;
 
-    const { roomId } = tokenStorage.parseItem();
+    try {
+      await httpClient.signIn({ body: formValues }).then(res => res.text());
 
-    navigate(HistoryPaths.room.generatePath({ roomId }));
+      const { roomId } = tokenStorage.parseItem();
+
+      navigate(HistoryPaths.room.generatePath({ roomId }));
+    } catch {
+      /* empty */
+    }
   };
 
   const PasswordIcon = isPasswordVisible ? VisibilityOffIcon : VisibilityIcon;
@@ -70,7 +76,11 @@ const EnterRoomPage = () => {
         <Input
           required
           startIcon={<KeyIcon />}
-          endIcon={<PasswordIcon onClick={togglePasswordVisibility} />}
+          endIcon={
+            <PasswordButton onClick={togglePasswordVisibility}>
+              <PasswordIcon />
+            </PasswordButton>
+          }
           placeholder="Room Password"
           name="password"
           value={formValues.password}
@@ -86,7 +96,8 @@ const EnterRoomPage = () => {
           required
           placeholder="Your Name"
           name="userName"
-          error={validationErrors['userName']}
+          value={formValues.userName}
+          error={validationErrors.userName}
           onChange={handleChange}
           onBlur={validateField}
         />

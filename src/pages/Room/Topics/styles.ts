@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { TopicListItem } from './types';
 
 export const MainContainer = styled.aside`
   padding: 1rem;
@@ -29,7 +30,7 @@ export const TopicsList = styled.ul`
   overflow-y: auto;
 `;
 
-export const TopicsListItem = styled.li`
+export const TopicsListItem = styled.li<TopicListItem>`
   display: grid;
   grid-template-columns: 1fr 1rem;
   list-style-type: none;

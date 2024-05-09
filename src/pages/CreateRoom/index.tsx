@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Input from 'ui-kit/Input';
@@ -9,7 +9,7 @@ import useForm from '@hooks/useForm';
 import HistoryPaths from '@services/historyPath';
 import httpClient from '@services/httpClient';
 import tokenStorage from '@services/tokenStorage';
-import { ButtonsContainer, FieldsContainer, Form } from './styles';
+import { ButtonsContainer, FieldsContainer, Form, PasswordButton } from './styles';
 
 const formSchema = object({
   userName: string().required(ValidationMessage.Required),
@@ -41,10 +41,15 @@ const CreateRoomPage = () => {
 
     if (!(await validateForm())) return;
 
-    await httpClient.signUp({ body: formValues }).then(res => res.text());
+    try {
+      // TODO: add loader
+      await httpClient.signUp({ body: formValues }).then(res => res.text());
 
-    const { roomId } = tokenStorage.parseItem();
-    navigate(HistoryPaths.room.generatePath({ roomId }));
+      const { roomId } = tokenStorage.parseItem();
+      navigate(HistoryPaths.room.generatePath({ roomId }));
+    } catch {
+      /* empty */
+    }
   };
 
   const PasswordIcon = isPasswordVisible ? VisibilityOffIcon : VisibilityIcon;
@@ -68,7 +73,11 @@ const CreateRoomPage = () => {
         <Input
           required
           startIcon={<KeyIcon />}
-          endIcon={<PasswordIcon onClick={togglePasswordVisibility} />}
+          endIcon={
+            <PasswordButton onClick={togglePasswordVisibility}>
+              <PasswordIcon />
+            </PasswordButton>
+          }
           placeholder="Room Password"
           name="password"
           type={isPasswordVisible ? 'text' : 'password'}

@@ -1,10 +1,14 @@
 import { useCallback, useState } from 'react';
 
-const useForm = <T>(initialValues, initialSchema) => {
-  const [initialFormValues] = useState<T>(initialValues);
-  const [validationErrors, setValidationErrors] = useState<T>({});
+type Error = {
+  [key: string]: string;
+};
+
+const useForm = <T extends object>(initialValues, initialSchema) => {
+  const [initialFormValues] = useState<Partial<T>>(initialValues);
+  const [validationErrors, setValidationErrors] = useState<Error>({});
   const [schema, setSchema] = useState(initialSchema);
-  const [formValues, setFormValues] = useState<T>(initialValues);
+  const [formValues, setFormValues] = useState<Partial<T>>(initialValues);
 
   const isFormChanged = Object.keys(formValues).some(
     key => formValues[key] !== initialFormValues[key],
@@ -31,7 +35,7 @@ const useForm = <T>(initialValues, initialSchema) => {
 
       return true;
     } catch ({ path, message }) {
-      setValidationErrors(() => ({ [path]: message }));
+      setValidationErrors({ [path]: message });
     }
   }, [formValues, schema]);
 

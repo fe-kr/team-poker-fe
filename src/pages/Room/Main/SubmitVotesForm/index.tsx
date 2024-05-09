@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Input from 'ui-kit/Input';
@@ -22,24 +21,30 @@ const formSchema = object({
     .required(ValidationMessage.Required),
 });
 
+interface ISubmitVotes {
+  estimation: string;
+}
+
 const SubmitVotesForm = () => {
   const { roomId, topicId } = useParams();
   const navigate = useNavigate();
   const { addTopic } = useTopicsStore(({ addTopic }) => ({ addTopic }));
 
-  const { formValues, handleChange, validationErrors, validateField, validateForm } = useForm(
-    formInitialValues,
-    formSchema,
-  );
+  const { formValues, handleChange, validationErrors, validateField, validateForm } =
+    useForm<ISubmitVotes>(formInitialValues, formSchema);
 
   const onSubmit = async e => {
     e.preventDefault();
 
     if (!(await validateForm())) return;
 
-    const topic = await httpClient.updateRoomTopic({ topicId, body: formValues });
-    addTopic(topic);
-    navigate(HistoryPaths.room.generatePath({ roomId }));
+    try {
+      const topic = await httpClient.updateRoomTopic({ topicId, body: formValues });
+      addTopic(topic);
+      navigate(HistoryPaths.room.generatePath({ roomId }));
+    } catch {
+      /* empty */
+    }
   };
 
   return (

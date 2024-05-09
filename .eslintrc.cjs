@@ -10,8 +10,14 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'import'],
+	parserOptions: {
+		ecmaVersion: 'latest',
+		sourceType: 'module',
+		project: './tsconfig.json',
+	},
+  plugins: ['react-refresh', 'import', '@typescript-eslint'],
   rules: {
+		'react/react-in-jsx-scope': 0,
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
@@ -36,7 +42,7 @@ module.exports = {
 			  allowSeparatedGroups: true,
 		  },
 	  ],
-	  'import/no-unresolved': 'off',
+	  'import/no-unresolved': 0,
 	  'import/order': [
 		  'error',
 		  {
@@ -56,6 +62,6 @@ module.exports = {
 	  ],
   },
 	"settings": {
-		"import/internal-regex": "(@components|@constants|@services|@hooks|@assets)(/.+)?",
+		"import/internal-regex": "(@components|@constants|@services|@hooks|@assets|@utils|@hocs)(/.+)?",
 	}
 }

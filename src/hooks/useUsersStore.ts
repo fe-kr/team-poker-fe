@@ -1,15 +1,32 @@
+import { User } from 'types/entity';
 import { create } from 'zustand';
+import { groupBy } from '@utils/common';
 
-const useUsersStore = create()(set => ({
-  users: [],
+type Users = { [key: string]: User };
+
+interface UsersState {
+  users: Users;
+  setUsers: (users: Users) => void;
+  addUser: (user: User) => void;
+  deleteUser: (id: string) => void;
+}
+
+const useUsersStore = create<UsersState>()((set, get) => ({
+  users: {},
   addUser: user => {
-    set(state => ({ ...state, users: [...state.users, user] }));
+    set(state => ({ ...state, users: { ...state.users, [user.id]: user } }));
   },
   setUsers: users => {
-    set(state => ({ ...state, users }));
+    const groupedUsers = groupBy(users, 'id');
+
+    set(state => ({ ...state, users: groupedUsers }));
   },
-  deleteUser: ({ id }) => {
-    set(state => ({ ...state, users: state.users.filter(user => user.id !== id) }));
+  deleteUser: id => {
+    const clonedUsers = { ...get().users };
+
+    delete clonedUsers[id];
+
+    set(state => ({ ...state, users: clonedUsers }));
   },
 }));
 

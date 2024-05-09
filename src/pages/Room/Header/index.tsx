@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Chip from 'ui-kit/Chip';
@@ -18,7 +17,7 @@ import {
 } from './styles';
 
 const RoomHeader = () => {
-  const { topicId } = useParams();
+  const { topicId } = useParams() as { topicId: string };
   const users = useRoomStore(({ users }) => users);
   const topics = useTopicsStore(({ topics }) => topics);
   const navigate = useNavigate();
@@ -54,7 +53,7 @@ const RoomHeader = () => {
   return (
     <Header>
       <ChipsContainer>
-        {users.map(({ id, name }) => (
+        {Object.values(users).map(({ id, name }) => (
           <Chip $size="large" name={name} title={name} key={id} />
         ))}
       </ChipsContainer>
@@ -75,7 +74,7 @@ const RoomHeader = () => {
           $size="small"
           onClick={onLogoutClick}
         >
-          <LogoutIcon width={20} height={20} />
+          <LogoutIcon />
         </Button>
       </UserMenuContainer>
     </Header>

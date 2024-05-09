@@ -1,6 +1,4 @@
-import withRoomAdminVisibility from '@hocs/withAdminVisibility';
-import { checkIsNil } from '@utils/common';
-import React, { useDeferredValue, useMemo, useState } from 'react';
+import { useDeferredValue, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Checkbox from 'ui-kit/Checkbox';
@@ -8,15 +6,17 @@ import Input from 'ui-kit/Input';
 import useDialog from 'ui-kit/useDialog';
 import { AddIcon, SearchIcon } from '@assets/icons';
 import { RoomEvent } from '@constants/enum';
+import withRoomAdminVisibility from '@hocs/withAdminVisibility';
 import useTopicsStore from '@hooks/useTopicsStore';
 import useVotesStore from '@hooks/useVotesStore';
 import HistoryPaths from '@services/historyPath';
 import wsClient from '@services/wsClient';
+import { checkIsNil } from '@utils/common';
 import AddTopicForm from './AddTopicForm';
 import { ControlsContainer, MainContainer, TopicsList, TopicsListItem } from './styles';
 
 const TopicsSidebar = () => {
-  const { roomId, topicId } = useParams();
+  const { roomId, topicId } = useParams() as { roomId: string; topicId?: string };
   const [searchValue, setSearchValue] = useState('');
   const deferredSearchValue = useDeferredValue(searchValue);
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const TopicsSidebar = () => {
   const onSelectTopic = e => {
     const { topicId } = e.currentTarget.dataset;
 
-    wsClient.emit(RoomEvent.TopicChose, topicId);
+    wsClient.emit(RoomEvent.TOPIC_CHOSE, topicId);
     resetVotes();
     navigate(HistoryPaths.roomTopic.generatePath({ roomId, topicId }));
   };
@@ -48,7 +48,9 @@ const TopicsSidebar = () => {
         const shouldIncludeCompletedItems = showCompletedItems || checkIsNil(estimation);
         const regex = new RegExp(deferredSearchValue || '', 'gi');
 
-        return shouldIncludeCompletedItems && [title, description].some(item => regex.test(item));
+        return (
+          shouldIncludeCompletedItems && [title, description].some(item => regex.test(item || ''))
+        );
       }),
     [topics, deferredSearchValue, showCompletedItems],
   );

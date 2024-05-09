@@ -1,7 +1,16 @@
-import { groupBy } from '@utils/common';
+import { Topic } from 'types/entity';
 import { create } from 'zustand';
+import { groupBy } from '@utils/common';
 
-const useTopicsStore = create()(set => ({
+type Topics = { [key: string]: Topic };
+
+interface TopicsState {
+  topics: Topics;
+  setTopics: (topics: Topics) => void;
+  addTopic: (topic: Topic) => void;
+}
+
+const useTopicsStore = create<TopicsState>()(set => ({
   topics: {},
   setTopics: topics => {
     const groupedTopics = groupBy(topics, 'id');

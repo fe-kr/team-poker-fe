@@ -29,3 +29,8 @@ export const ButtonsContainer = styled.div`
     justify-content: center;
   }
 `;
+
+export const PasswordButton = styled.button`
+  border: none;
+  background: transparent;
+`;

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import Card from 'ui-kit/Card';
@@ -20,7 +20,7 @@ import {
 import SubmitVotesForm from './SubmitVotesForm';
 
 const Main = () => {
-  const { topicId } = useParams();
+  const { topicId } = useParams() as { topicId: string };
   const currentUser = useUserContext();
   const { results, votes, addVote, resetVotes } = useVotesStore();
 
@@ -28,21 +28,21 @@ const Main = () => {
   const votesList = useMemo(() => Object.values(votes), [votes]);
 
   const onSelectVote = e => {
-    const { vote } = e.currentTarget.dataset;
+    const vote = +e.currentTarget.dataset.vote;
 
     addVote({ vote, topicId, userName: currentUser.name, id: currentUser.id });
 
-    wsClient.emit(RoomEvent.VoteSubmitted, { vote, topicId });
+    wsClient.emit(RoomEvent.VOTE_SUBMITTED, { vote, topicId });
   };
 
   const onShowResults = () => {
-    wsClient.emit(RoomEvent.VotesRevealed, topicId);
+    wsClient.emit(RoomEvent.VOTES_REVEALED, topicId);
   };
 
   const onResetResults = () => {
     resetVotes();
 
-    wsClient.emit(RoomEvent.VotesReset, topicId);
+    wsClient.emit(RoomEvent.VOTES_RESET, topicId);
   };
 
   return (

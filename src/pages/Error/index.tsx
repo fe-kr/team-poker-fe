@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink, useRouteError } from 'react-router-dom';
 import Button from 'ui-kit/Button';
 import HistoryPaths from '@services/historyPath';

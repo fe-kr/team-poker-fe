@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from 'ui-kit/Button';
 import Input from 'ui-kit/Input';
 import useDialog from 'ui-kit/useDialog';
@@ -21,25 +20,36 @@ const formSchema = object({
   description: string(),
 });
 
-const AddTopicForm = ({ roomId }) => {
+interface AddTopicForm {
+  title: string;
+  description?: string;
+}
+
+interface AddTopic {
+  roomId: string;
+}
+
+const AddTopicForm = ({ roomId }: AddTopic) => {
   const { closeDialog } = useDialog();
   const { addTopic } = useTopicsStore();
-  const { formValues, handleChange, validationErrors, validateField, validateForm } = useForm(
-    formInitialValues,
-    formSchema,
-  );
+  const { formValues, handleChange, validationErrors, validateField, validateForm } =
+    useForm<AddTopicForm>(formInitialValues, formSchema);
 
   const onSubmit = async e => {
     e.preventDefault();
 
     if (!(await validateForm())) return;
 
-    const body = { ...formValues, roomId };
-    const topic = await httpClient.createRoomTopic({ body });
-    wsClient.emit(RoomEvent.TopicCreated, topic.id);
+    try {
+      const body = { ...formValues, roomId };
+      const topic = await httpClient.createRoomTopic({ body });
+      wsClient.emit(RoomEvent.TOPIC_CREATED, topic.id);
 
-    addTopic(topic);
-    closeDialog();
+      addTopic(topic);
+      closeDialog();
+    } catch {
+      /* empty */
+    }
   };
 
   return (

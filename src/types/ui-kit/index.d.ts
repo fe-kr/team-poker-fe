@@ -1,4 +1,4 @@
 declare module 'ui-kit/*' {
-  const Component: unknown;
+  const Component: FC;
   export default Component;
 }
